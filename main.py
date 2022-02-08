@@ -7,7 +7,7 @@ def cargaDatos(fichero):
     l = [[int(l[i*10+j]) for j in range(10) ]for i in range(10)]
     return l
 
-print("hola soy jorge")
+print("hola soy jorge2")
 m = cargaDatos("input/SOKOBOTTO1.txt")
 
 #Mostrado de datos
