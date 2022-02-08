@@ -1,1 +1,2 @@
-print("2cosas2")
+print("cosas2  pato")
+
