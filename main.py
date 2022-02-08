@@ -15,7 +15,3 @@ for i in range(10):
     for j in range(10):
         print(m[i][j], end=',')
     print()
-
-
-
-
