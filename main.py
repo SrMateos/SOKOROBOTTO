@@ -7,11 +7,15 @@ def cargaDatos(fichero):
     l = [[int(l[i*10+j]) for j in range(10) ]for i in range(10)]
     return l
 
-print("hola soy jorge3")
-m = cargaDatos("input/SOKOBOTTO1.txt")
+def main():
+    #Realizamos la carga de datos en una matriz m
+    m = cargaDatos("input/SOKOBOTTO1.txt")
 
-#Mostrado de datos
-for i in range(10):
-    for j in range(10):
-        print(m[i][j], end=',')
-    print()
+    #Mostrado de datos
+    for i in range(10):
+        for j in range(10):
+            print(m[i][j], end=',')
+        print()
+
+if __name__ == '__main__':
+    main()
