@@ -49,19 +49,20 @@ class Tablero:
 
     def __comprobarMovimientoVacio(self,x,y):
         return self.__matriz[x][y] == 0 or self.__matriz[x][y] == 3
-        
+    
+    #0-celda vacia 1-muro 2-caja 3-objetivo 4-robot
     def movIzquierda(self):
         if self.__comprobarMovimientoVacio(self.__robot[0],self.__robot[1]-1):
             self.__robot[1] -= 1
 
             self.__matriz
-        elif self.__matriz[ self.__robot[0] ][ self.__robot[1]-1 ] == 2
+        #elif self.__matriz[ self.__robot[0] ][ self.__robot[1]-1 ] == 2:
         
     def movDerecha(self):
         if self.__comprobarMovimientoVacio(self.__robot[0],self.__robot[1]+1):
             self.__robot[1] += 1
 
-        elif self.__matriz[self.__robot[0]][self._robot[1] + 1] == 2
+        #elif self.__matriz[self.__robot[0]][self._robot[1] + 1] == 2:
     
     def movArriba(self):
         if self.__comprobarMovimientoVacio(self.__robot[0]-1,self.__robot[1]):
@@ -71,5 +72,5 @@ class Tablero:
         if self.__comprobarMovimientoVacio(self.__robot[0]+1,self.__robot[1]):
             self.__robot[0] += 1
 
-    def cambioPosicion(self):
+    #def cambioPosicion(self):
 
