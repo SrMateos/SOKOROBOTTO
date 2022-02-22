@@ -49,7 +49,8 @@ class Tablero:
 
     def __comprobarMovimientoVacio(self,x,y):
         return self.__matriz[x][y] == 0 or self.__matriz[x][y] == 3
-        
+    
+    #0-celda vacia 1-muro 2-caja 3-objetivo 4-robot
     def movIzquierda(self):
         if self.__comprobarMovimientoVacio(self.__robot[0],self.__robot[1]-1):
             self.__robot[1] -= 1
