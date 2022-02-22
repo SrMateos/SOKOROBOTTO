@@ -35,7 +35,10 @@ class Tablero:
         #Mostrado de datos
         for i in range(10):
             for j in range(10):
-                print(self.__matriz[i][j], end=' ')
+                if self.__matriz[i][j] != 0:
+                    print(self.__matriz[i][j], end=' ')
+                else:
+                    print(".", end=' ')
             print()
 
     def mostrarPosicionRobot(self):
@@ -51,26 +54,45 @@ class Tablero:
         return self.__matriz[x][y] == 0 or self.__matriz[x][y] == 3
     
     #0-celda vacia 1-muro 2-caja 3-objetivo 4-robot
-    def movIzquierda(self):
-        if self.__comprobarMovimientoVacio(self.__robot[0],self.__robot[1]-1):
-            self.__robot[1] -= 1
+    def __actualizarMatriz(self,x,y,movimientoCaja):
+        #Actualizar cajas
+        self.__matriz[self.__robot[0]][self.__robot[1]] = 4
+        if movimientoCaja:
+            self.__matriz[self.__robot[0] + x][self.__robot[1] + y] = 2
 
-            self.__matriz
-        #elif self.__matriz[ self.__robot[0] ][ self.__robot[1]-1 ] == 2:
+        x0 = self.__robot[0] - x   
+        y0 = self.__robot[1] - y
         
+        if [x0,y0] in self.__objetivoCajas:
+            self.__matriz[x0][y0] = 3 
+        else: 
+            self.__matriz[x0][y0] = 0
+    
+
+    def __mover(self,x,y):
+        if self.__comprobarMovimientoVacio(self.__robot[0] + x, self.__robot[1] + y):
+            self.__robot[0],self.__robot[1] = self.__robot[0] + x, self.__robot[1] + y #movemos robot
+            self.__actualizarMatriz(x,y,False)
+                        
+        elif self.__matriz[self.__robot[0] + x][self.__robot[1] + y] == 2: 
+            if self.__comprobarMovimientoVacio(self.__robot[0] + 2*x, self.__robot[1] + 2*y):
+                self.__robot[0],self.__robot[1] = self.__robot[0] + x, self.__robot[1] + y #movemos robot
+                for caja in self.__cajas:
+                    if caja == self.__cajas:
+                        caja[0],caja[1] = caja[0] + 2*x, caja[1] + 2*y #actualizamos la caja que estamos moviendo
+
+            self.__actualizarMatriz(x,y,True)
+
+    #0-celda vacia 1-muro 2-caja 3-objetivo 4-robot
+    def movIzquierda(self):
+        self.__mover(0, -1)
+                       
     def movDerecha(self):
-        if self.__comprobarMovimientoVacio(self.__robot[0],self.__robot[1]+1):
-            self.__robot[1] += 1
+        self.__mover(0, +1)
 
-        #elif self.__matriz[self.__robot[0]][self._robot[1] + 1] == 2:
-    
     def movArriba(self):
-        if self.__comprobarMovimientoVacio(self.__robot[0]-1,self.__robot[1]):
-            self.__robot[0] -= 1
-    
+        self.__mover(-1, 0)
+            
     def movAbajo(self):
-        if self.__comprobarMovimientoVacio(self.__robot[0]+1,self.__robot[1]):
-            self.__robot[0] += 1
-
-    #def cambioPosicion(self):
-
+        self.__mover(1, 0)
+    
