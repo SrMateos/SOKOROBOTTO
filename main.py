@@ -29,15 +29,3 @@ def eleccion(t,n):
 
 if __name__ == '__main__':
     main()
-
-
-'''    
-    t.mostrarTablero()
-    t.movAbajo()
-    print()
-    t.mostrarTablero()
-    
-    t.movAbajo()
-    print()
-    t.mostrarTablero()
-'''
