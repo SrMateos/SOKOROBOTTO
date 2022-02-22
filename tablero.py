@@ -61,7 +61,7 @@ class Tablero:
         if self.__comprobarMovimientoVacio(self.__robot[0],self.__robot[1]+1):
             self.__robot[1] += 1
 
-        elif if self.__matriz[self.__robot[0]][self._robot[1] + 1] == 2
+        elif self.__matriz[self.__robot[0]][self._robot[1] + 1] == 2
     
     def movArriba(self):
         if self.__comprobarMovimientoVacio(self.__robot[0]-1,self.__robot[1]):
