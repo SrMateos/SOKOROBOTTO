@@ -23,7 +23,8 @@ def main():
         else:
             eleccion(t,n)
             
-    elapsed_time = time() - startTime()
+    elapsed_time = time() - startTime
+    print(f'El tiempo es: {1}',elapsed_time) 
     print()
 
 def eleccion(t,n):
@@ -72,4 +73,4 @@ def test():
     print(f'El tiempo es: {1}',elapsed_time)    
 
 if __name__ == '__main__':
-    test()
+    main()

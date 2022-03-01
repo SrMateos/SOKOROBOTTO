@@ -1,3 +1,5 @@
+from estado import Estado
+
 class Tablero:
     def __init__(self):
         # Matriz tablero
@@ -8,6 +10,7 @@ class Tablero:
         self.__cajas  = []
         # Posiciones objetivo cajas
         self.__objetivoCajas = []
+        self.__estado = None
 
     def cargarDatos(self, fichero):
         # Abrimos el fichero
@@ -18,16 +21,20 @@ class Tablero:
         self.__matriz = [[int(l[i*10+j]) for j in range(10) ] for i in range(10)]
         # Guardamos 
         self.__posicionJugadorCajas()
+        self.__estado = Estado(self.__robot, self.__cajas)
   
     def __posicionJugadorCajas(self):
         for i in range(10):
             for j in range(10):
                 if self.__matriz[i][j] !=0 and self.__matriz[i][j] !=1:
+                    # Comprobamos caja
                     if self.__matriz[i][j] == 2:
                         self.__cajas.append([i,j])
+                    # Comprobamos objetivo
                     elif self.__matriz[i][j] == 3:
                         self.__objetivoCajas.append([i,j])
-                    elif self.__matriz[i][j] == 4:
+                    # Comprobamos robot
+                    else:
                         self.__robot = [i,j]
                     
     def mostrarTablero(self):
@@ -49,6 +56,7 @@ class Tablero:
     def mostrarPosicionObjetivo(self):
         print(self.__objetivoCajas)
 
+    # Comprueba que la posición x,y sea un movimiento posible
     def __comprobarMovimientoVacio(self,x,y):
         return self.__matriz[x][y] == 0 or self.__matriz[x][y] == 3
     
