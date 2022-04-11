@@ -1,138 +1,91 @@
-from estado import Estado
+
+from direcciones import direccion
 
 class Tablero:
-    def __init__(self):
+    def __init__(self,matriz,objetivoCajas):
         # Matriz tablero
-        self.__matriz = [[]]
-        # Posicion robot
-        self.__robot  = None
-        # Posiciones cajas
-        self.__cajas  = []
+        self.__matriz = matriz
         # Posiciones objetivo cajas
-        self.__objetivoCajas = []
-        self.__estado = None
+        self.__objetivoCajas = objetivoCajas
 
-    def cargarDatos(self, fichero):
-        # Abrimos el fichero
-        f = open(fichero,'r')
-        # Leemos el fichero entero, quitamos todos los saltos de línea, separamos por comas y quitamos espacio final
-        l = f.read().replace('\n','').split(",")[0:-1]
-        # Convertimos a __matriz de enteros y devolvemos
-        self.__matriz = [[int(l[i*10+j]) for j in range(10) ] for i in range(10)]
-        # Guardamos 
-        self.__posicionJugadorCajas()
-        self.__estado = Estado(self.__robot, self.__cajas)
-  
-    def __posicionJugadorCajas(self):
-        for i in range(10):
-            for j in range(10):
-                if self.__matriz[i][j] !=0 and self.__matriz[i][j] !=1:
-                    # Comprobamos caja
-                    if self.__matriz[i][j] == 2:
-                        self.__cajas.append([i,j])
-                    # Comprobamos objetivo
-                    elif self.__matriz[i][j] == 3:
-                        self.__objetivoCajas.append([i,j])
-                    # Comprobamos robot
-                    else:
-                        self.__robot = [i,j]
-                    
-    def mostrarTablero(self):
+    def getObjetivoCajas(self):
+        return self.__objetivoCajas
+
+    def getMatriz(self):
+        return self.__matriz
+
+    def mostrarTablero(self,robot,cajas):
         # Mostrado de datos
+        print(end='   ')
         for i in range(10):
+            print(i, end=' ')
+        print()
+        print()
+
+        for i in range(10):
+            print(i, end='  ')
             for j in range(10):
-                if self.__matriz[i][j] != 0:
-                    print(self.__matriz[i][j], end=' ')
-                else:
+                if [i,j] == robot:
+                    print(4, end=' ')
+                elif [i,j] in cajas:
+                    print(2, end=' ')
+                elif [i,j] in self.__objetivoCajas:
+                    print(3, end=' ')
+                elif self.__matriz[i][j] == 0:
                     print(".", end=' ')
+                else:
+                     print(self.__matriz[i][j], end=' ')
             print()
-
-    def mostrarPosicionRobot(self):
-        print(self.__robot)
-
-    def mostrarPosicionCajas(self):
-        print(self.__cajas)
-
+                
     def mostrarPosicionObjetivo(self):
         print(self.__objetivoCajas)
 
-    # Comprueba que la posición x,y sea un movimiento posible
-    def __comprobarMovimientoVacio(self,x,y):
-        return self.__matriz[x][y] == 0 or self.__matriz[x][y] == 3
-    
-    
-    def __actualizarMatriz(self,x,y,movimientoCaja):
-        # Actualizar Robot
-        self.__matriz[self.__robot[0]][self.__robot[1]] = 4
+    def comprobarMovimiento(self, s ,robot, cajas):
+        diccionarioDireccion = {"A":direccion.ARRIBA, "B":direccion.ABAJO, "I":direccion.IZQUIERDA, "D":direccion.DERECHA}
         
-        # Pintamos Caja más si ha habido movimiento de caja
-        if movimientoCaja:
-            self.__matriz[self.__robot[0] + x][self.__robot[1] + y] = 2
-        
-        # Antigua posicion de robot
-        x0 = self.__robot[0] - x   
-        y0 = self.__robot[1] - y
-        
-        # Si la posicion antigua del robot era un objetivo
-        if [x0,y0] in self.__objetivoCajas: 
-            self.__matriz[x0][y0] = 3 
-        else: 
-            self.__matriz[x0][y0] = 0
+        d = diccionarioDireccion.get(s).getCoordenadas()
+        posicionRobot = [robot[0]+d[0],robot[1]+d[1]]
+        return self.__matriz[posicionRobot[0]][posicionRobot[1]] != 1 and posicionRobot not in cajas, posicionRobot
 
-    def __mover(self,x,y,empujar):
-        if self.__comprobarMovimientoVacio(self.__robot[0] + x, self.__robot[1] + y) and not empujar:
-            # Movemos robot
-            self.__robot[0],self.__robot[1] = self.__robot[0] + x, self.__robot[1] + y 
-            self.__actualizarMatriz(x,y,False)
-                        
-        elif self.__matriz[self.__robot[0] + x][self.__robot[1] + y] == 2 and empujar: 
-            if self.__comprobarMovimientoVacio(self.__robot[0] + 2*x, self.__robot[1] + 2*y):
-                
-                # Movemos robot
-                self.__robot[0],self.__robot[1] = self.__robot[0] + x, self.__robot[1] + y 
-                for caja in self.__cajas:
-                    # TODO self.__cajas
-                    if caja == self.__robot:
-                        # Actualizamos la caja que estamos moviendo
-                        caja[0],caja[1] = caja[0] + x, caja[1] + y 
+    def comprobarEmpuje(self, s, robot, cajas):
+        diccionarioDireccion = {"EA":direccion.ARRIBA, "EB":direccion.ABAJO, "EI":direccion.IZQUIERDA, "ED":direccion.DERECHA}
+        d = diccionarioDireccion.get(s).getCoordenadas()
+        posicionRobot = [robot[0]+d[0],robot[1]+d[1]]
+        posicionCaja = [posicionRobot[0]+d[0],posicionRobot[1]+d[1]]
+        return  posicionRobot in cajas and self.__matriz[posicionRobot[0]][posicionRobot[1]] in [0,3] and self.__matriz[posicionCaja[0]][posicionCaja[1]] in [0,3], posicionRobot, posicionCaja
 
-            self.__actualizarMatriz(x,y,True)
+    def comprobarIntercambio(self, s, robot, cajas):
+        diccionarioDireccion = {"IA":direccion.ARRIBA, "IB":direccion.ABAJO, "II":direccion.IZQUIERDA, "ID":direccion.DERECHA}
+        d = diccionarioDireccion.get(s).getCoordenadas()
+        posicionRobot,posicionCaja = [robot[0]+d[0],robot[1]+d[1]],robot
+        return  posicionRobot in cajas, posicionRobot, posicionCaja
 
-    def movIzquierda(self,empujar):
-        self.__mover(0, -1, empujar)
-                       
-    def movDerecha(self,empujar):
-        self.__mover(0, 1, empujar)
-
-    def movArriba(self,empujar):
-        self.__mover(-1, 0, empujar)
-            
-    def movAbajo(self,empujar):
-        self.__mover(1, 0, empujar)
-    
-    def intercambio(self, x, y):
-        for caja in self.__cajas:
-            if [self.__robot[0] + x , self.__robot[1] + y] == caja:
-                self.__robot[0], self.__robot[1] = caja[0], caja[1]
-                caja[0], caja[1] = caja[0] - x, caja[1] - y
-                self.__matriz[self.__robot[0]][self.__robot[1]] = 4
-                self.__matriz[caja[0]][caja[1]] = 2
-                            
-    def intercambioIzquierda(self):
-        self.intercambio(0, -1)
-    
-    def intercambioDerecha(self):
-        self.intercambio(0, 1)
-    
-    def intercambioArriba(self):
-        self.intercambio(-1, 0)
-    
-    def intercambioAbajo(self):
-        self.intercambio(1, 0)
-    
-    def ganar(self):
-        for caja in self.__cajas:
+    def ganar(self,cajas):
+        for caja in cajas:
             if caja not in self.__objetivoCajas:
                 return False 
         
         return True 
+
+    # def __mover(self,direccion, robot):
+    #     x,y = direccion
+    #     if self.__comprobarMovimientoVacio(robot[0] + x, robot[1] + y):
+    #         robot[0],robot[1] = robot[0] + x, robot[1] + y 
+
+    # def __intercambio(self, direccion, robot,cajas):
+    #     x,y = direccion
+    #     for caja in cajas:
+    #         if [robot[0] + x , robot[1] + y] == caja:
+    #             robot[0], robot[1] = caja[0], caja[1]
+    #             caja[0], caja[1] = caja[0] - x, caja[1] - y
+
+    # def __empujar(self, direccion, robot, cajas):             
+    #     x,y = direccion
+    #     if [robot[0] + x, robot[1] + y] in cajas: 
+    #         if self.__comprobarMovimientoVacio(robot[0] + 2*x, robot[1] + 2*y):
+    #             # Movemos robot
+    #             robot[0],robot[1] = robot[0] + x, robot[1] + y 
+    #             for caja in cajas:
+    #                 if caja == robot:
+    #                     # Actualizamos la caja que estamos moviendo
+    #                     caja[0],caja[1] = caja[0] + x,caja[1] + y 
