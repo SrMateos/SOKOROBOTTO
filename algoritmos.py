@@ -133,13 +133,14 @@ class Algoritmos():
             nuevosSucesores = estado.generarSucesores()
             self.nodosTotales += len(nuevosSucesores)
             for sucesor in nuevosSucesores:
-                if sucesor not in self.nodosCerrados:
-                    sucesor.calcularHeuristica2()
-                else:
-                    sucesor.calcularHeuristica2()
+                sucesor.calcularHeuristica2()
+                if sucesor in self.nodosCerrados:
                     sucesor.setHeuristica(sucesor.getHeuristica()+100)
 
             nuevosSucesores = sorted(nuevosSucesores, key=lambda x: x.getHeuristica())[0:2]
+
+            if len(nuevosSucesores) == 0:
+                return False
 
             estado = nuevosSucesores[randint(0,len(nuevosSucesores)-1)]
             
