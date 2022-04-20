@@ -118,7 +118,7 @@ class Algoritmos():
     def maximaPendienteRandom(self, estadoInicial):
         ganar    = 1
         intentos = 1
-        while not self.__maximaPendienteRandom(estadoInicial) and intentos<1000000:
+        while not self.__maximaPendienteRandom(estadoInicial) and intentos<10_000:
             intentos += 1
             if intentos % 1000 == 0:
                 print(f"Intento número {intentos}")
