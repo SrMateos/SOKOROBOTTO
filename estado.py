@@ -140,14 +140,14 @@ class Estado():
         else:
             distanciaMenorRobotCaja = 0
 
-        #calculo de las cajas que no estan en objetivos
+        # calculo de las cajas que no estan en objetivos
         cajasNoEnObjetivos = 0
         for caja in self.__cajas:
             if(caja not in Estado.tablero.getObjetivoCajas()):
                 cajasNoEnObjetivos += 100
         
         self.__heuristica = 3*distanciaMenorRobotCaja  + distanciaMenorCajaObjetivo + cajasNoEnObjetivos
-        self.__cheur = self.__coste + self.__heuristica # 7.143 valor de coste mejor
+        self.__cheur = self.__coste + self.__heuristica 
     
     def calcularHeuristica2(self):
         # calculo de la distancia del robot a la caja mas cercana que no esté en un objetivo

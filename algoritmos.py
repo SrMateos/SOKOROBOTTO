@@ -100,10 +100,13 @@ class Algoritmos():
                 sucesor.calcularHeuristica()
                 self.nodosAbiertos.append(sucesor)
 
+            # Ordenamos la lista de abiertos por heurística
             listaNodos = sorted(self.nodosAbiertos, key=lambda x: x.getHeuristica())
+            # Nos quedamos con los nodos con la heurística mínima que sea menor que la del actual y no estén en la lista de cerrados
             listaNodos = [x for x in listaNodos if x.getHeuristica() == listaNodos[0].getHeuristica() and x not in self.nodosCerrados
                           and x.getHeuristica() < estado.getHeuristica()]
-            
+
+            # Si la lista está vacía, muere el intento
             if(len(listaNodos) == 0):
                 print("No encuentra solución")
                 return False
@@ -137,8 +140,10 @@ class Algoritmos():
                 if sucesor in self.nodosCerrados:
                     sucesor.setHeuristica(sucesor.getHeuristica()+100)
 
+            # Ordenamos la lista de sucesores por heurística
             nuevosSucesores = sorted(nuevosSucesores, key=lambda x: x.getHeuristica())[0:2]
 
+            # Si la lista está vacía, muere el intento
             if len(nuevosSucesores) == 0:
                 return False
 
@@ -149,6 +154,8 @@ class Algoritmos():
                 print("Nodos totales: ", self.nodosTotales)
                 print("Coste de la solución: ", estado.getCoste())
                 return True
+                
+        # Si después de 100 pasos no se ha encontrado solución, muere el intento
         return False
         
 
