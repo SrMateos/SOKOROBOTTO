@@ -3,7 +3,7 @@ from direcciones import direccion
 
 class Estado():
     tablero = None
-    
+
     def __init__(self, robot, cajas, coste, padre, letra, intercambios):
         self.__robot = robot
         self.__cajas = cajas
@@ -119,20 +119,15 @@ class Estado():
                     self.__sucesores.append(Estado(robot, cajas, self.__coste+1, self, i, self.__intercambios - 1))
 
     def calcularHeuristica(self):
-    # calculo de la distancia del robot a la caja mas cercana que no esté en un objetivo
+        # calculo de la distancia del robot a la caja mas cercana que no esté en un objetivo
         distanciaMenorRobotCaja = 999
         cajaMasCercana = None
         for caja in self.__cajas:
             distancia = self.calcularDistancia(self.__robot, caja)
-            # print(self.__robot)
-            # print(caja)
             if distancia < distanciaMenorRobotCaja and caja not in Estado.tablero.getObjetivoCajas():
-                # print(f"distancia: {distancia} y distanciaMenorRobotCaja: {distanciaMenorRobotCaja}")
                 distanciaMenorRobotCaja = distancia
                 cajaMasCercana = caja
         
-        # print("cajamascercana: ", cajaMasCercana)
-
         # calculo de la distancia de la caja mas cercana que no esta en un objetivo (si hay) a su objetivo mas cercano
         distanciaMenorCajaObjetivo = 0
         distancia = 0
@@ -151,20 +146,20 @@ class Estado():
             if(caja not in Estado.tablero.getObjetivoCajas()):
                 cajasNoEnObjetivos += 100
         
-        # print(" Distancia caja mas cercana: ", distanciaMenorRobotCaja, " Distancia caja mas cercana objetivo: ", distanciaMenorCajaObjetivo, " Cajas no en objetivos: ", cajasNoEnObjetivos)
         self.__heuristica = 3*distanciaMenorRobotCaja  + distanciaMenorCajaObjetivo + cajasNoEnObjetivos
         self.__cheur = self.__coste + self.__heuristica # 7.143 valor de coste mejor
     
     def calcularHeuristica2(self):
+        # calculo de la distancia del robot a la caja mas cercana que no esté en un objetivo
         distanciaMenorRobotCaja = 999
         cajaMasCercana = None
         for caja in self.__cajas:
             distancia = self.calcularDistancia(self.__robot, caja)
             if distancia < distanciaMenorRobotCaja and caja not in Estado.tablero.getObjetivoCajas():
-                # print(f"distancia: {distancia} y distanciaMenorRobotCaja: {distanciaMenorRobotCaja}")
                 distanciaMenorRobotCaja = distancia
                 cajaMasCercana = caja
 
+        # calculo de la distancia de la caja mas cercana que no esta en un objetivo (si hay) a su objetivo mas cercano
         distanciaMenorCajaObjetivo = 0
         if(cajaMasCercana != None):
             distanciaMenorCajaObjetivo = 999

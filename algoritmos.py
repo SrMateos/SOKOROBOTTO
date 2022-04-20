@@ -88,11 +88,14 @@ class Algoritmos():
         self.nodosCerrados = []
         self.nodosTotales = 0
         while not estado.ganar():
-            
+            # Creamos lista de nodos abiertos
             self.nodosAbiertos = []
             self.nodosCerrados.append(estado)
             nuevosSucesores = estado.generarSucesores()
+            
+            # Añadimos el número de nodos totales
             self.nodosTotales += len(nuevosSucesores)
+            
             for sucesor in nuevosSucesores:
                 sucesor.calcularHeuristica()
                 self.nodosAbiertos.append(sucesor)
@@ -108,10 +111,13 @@ class Algoritmos():
             estado = listaNodos[randint(0,len(listaNodos)-1)]
             estado.mostrarEstado()
 
+        estado.imprimirPadres()
+        print("Nodos totales: ", self.nodosTotales)
+        print("Coste de la solución: ", estado.getCoste()) 
 
     def maximaPendienteRandom(self, estadoInicial):
         ganar    = 1
-        intentos = 0
+        intentos = 1
         while not self.__maximaPendienteRandom(estadoInicial) and intentos<1000000:
             intentos += 1
             if intentos % 1000 == 0:
@@ -143,10 +149,5 @@ class Algoritmos():
                 print("Coste de la solución: ", estado.getCoste())
                 return True
         return False
-
-
-        estado.imprimirPadres()
-        print("Nodos totales: ", self.nodosTotales)
-        print("Coste de la solución: ", estado.getCoste()) 
         
 

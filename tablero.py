@@ -66,26 +66,3 @@ class Tablero:
                 return False 
         
         return True 
-
-    # def __mover(self,direccion, robot):
-    #     x,y = direccion
-    #     if self.__comprobarMovimientoVacio(robot[0] + x, robot[1] + y):
-    #         robot[0],robot[1] = robot[0] + x, robot[1] + y 
-
-    # def __intercambio(self, direccion, robot,cajas):
-    #     x,y = direccion
-    #     for caja in cajas:
-    #         if [robot[0] + x , robot[1] + y] == caja:
-    #             robot[0], robot[1] = caja[0], caja[1]
-    #             caja[0], caja[1] = caja[0] - x, caja[1] - y
-
-    # def __empujar(self, direccion, robot, cajas):             
-    #     x,y = direccion
-    #     if [robot[0] + x, robot[1] + y] in cajas: 
-    #         if self.__comprobarMovimientoVacio(robot[0] + 2*x, robot[1] + 2*y):
-    #             # Movemos robot
-    #             robot[0],robot[1] = robot[0] + x, robot[1] + y 
-    #             for caja in cajas:
-    #                 if caja == robot:
-    #                     # Actualizamos la caja que estamos moviendo
-    #                     caja[0],caja[1] = caja[0] + x,caja[1] + y 

@@ -57,22 +57,17 @@ if __name__ == '__main__':
     print("2.- Primero mejor")
     print("3.- Máxima pendiente")
     print("4.- Máxima pendiente random")
-    alg = int(input("(Introduce un número del 1 al 3): "))
-    start = time()
+    alg = int(input("(Introduce un número del 1 al 4): "))
+    funcion = None
     if alg == 1:
-       algoritmos.funcionAEstrella(estadoInicial)
+        funcion = algoritmos.funcionAEstrella
     elif alg == 2:
-        algoritmos.primeroMejor(estadoInicial)
+        funcion = algoritmos.primeroMejor
     elif alg == 3:
-        algoritmos.maximaPendiente(estadoInicial)
+        funcion = algoritmos.maximaPendiente
     elif alg == 4:
-        algoritmos.maximaPendienteRandom(estadoInicial)
+        funcion = algoritmos.maximaPendienteRandom
     
+    start = time()
+    funcion(estadoInicial)
     print(f"Tiempo: {time()-start} segundos")
-
-    # ganar=1
-    # intentos=0
-    # while ganar == 1 and intentos<1000000:
-    #     ganar = algoritmos.maximaPendienteRandom(estadoInicial)
-    #     intentos += 1
-    # print (intentos)
