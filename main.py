@@ -3,9 +3,7 @@
 from algoritmos import Algoritmos
 from tablero import Tablero
 from estado import Estado
-import os
 from time import time
-from time import sleep
 
 def cargarMatriz(fichero):
     # Abrimos el fichero
@@ -41,15 +39,40 @@ def cargarEstado(matriz):
     Estado.setTablero(Tablero(matriz,objetivoCajas))
     return Estado(robot, cajas, 0, None, "", 3)
 
+def seleccionarInput():
+    print("Seleccione el fichero de entrada:")
+    for i in range(1,11):
+        print(f"{i}. SOKOBOTTO{i}.txt")
+    
+    numeroFichero = input("Introduzca el número: ")
+    return "input/SOKOBOTTO" + numeroFichero + ".txt"
+
 if __name__ == '__main__':
-    estadoInicial = cargarEstado(cargarMatriz("input/SOKOBOTTO1.txt"))
+
+    estadoInicial = cargarEstado(cargarMatriz(seleccionarInput()))
     
     algoritmos = Algoritmos()
-    # algoritmos.funcionAEstrella(estadoInicial)
+    print("Elige un algoritmo: ")
+    print("1.- A*")
+    print("2.- Primero mejor")
+    print("3.- Máxima pendiente")
+    print("4.- Máxima pendiente random")
+    alg = int(input("(Introduce un número del 1 al 3): "))
+    start = time()
+    if alg == 1:
+       algoritmos.funcionAEstrella(estadoInicial)
+    elif alg == 2:
+        algoritmos.primeroMejor(estadoInicial)
+    elif alg == 3:
+        algoritmos.maximaPendiente(estadoInicial)
+    elif alg == 4:
+        algoritmos.maximaPendienteRandom(estadoInicial)
     
-    ganar=1
-    intentos=0
-    while ganar == 1 and intentos<1000000:
-        ganar = algoritmos.maximaPendienteRandom(estadoInicial)
-        intentos += 1
-    print (intentos)
+    print(f"Tiempo: {time()-start} segundos")
+
+    # ganar=1
+    # intentos=0
+    # while ganar == 1 and intentos<1000000:
+    #     ganar = algoritmos.maximaPendienteRandom(estadoInicial)
+    #     intentos += 1
+    # print (intentos)

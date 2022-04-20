@@ -52,7 +52,7 @@ class Tablero:
         d = diccionarioDireccion.get(s).getCoordenadas()
         posicionRobot = [robot[0]+d[0],robot[1]+d[1]]
         posicionCaja = [posicionRobot[0]+d[0],posicionRobot[1]+d[1]]
-        return  posicionRobot in cajas and self.__matriz[posicionRobot[0]][posicionRobot[1]] in [0,3] and self.__matriz[posicionCaja[0]][posicionCaja[1]] in [0,3], posicionRobot, posicionCaja
+        return  posicionRobot in cajas and posicionCaja not in cajas and self.__matriz[posicionRobot[0]][posicionRobot[1]] in [0,3] and self.__matriz[posicionCaja[0]][posicionCaja[1]] in [0,3], posicionRobot, posicionCaja
 
     def comprobarIntercambio(self, s, robot, cajas):
         diccionarioDireccion = {"IA":direccion.ARRIBA, "IB":direccion.ABAJO, "II":direccion.IZQUIERDA, "ID":direccion.DERECHA}
