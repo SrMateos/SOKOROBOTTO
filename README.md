@@ -10,5 +10,7 @@ python main.py
 
 # Authors
 Javier Mateos Manzano (SrMateos)
+
 Jorge Gómez Gibello (jorgegg02)
+
 Elena Barrera Rodrigo (elenannie)
